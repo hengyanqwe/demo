@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>测试 - Layui</title>
+  <link rel="stylesheet" href="layui/css/layui.css">
+</head>
+<body>
+
+<div class="layui-container">
+  <table class="layui-visible" id="MenuList"></table>
+</div>
+
+<!-- body 末尾处引入 layui -->
+<script src="layui/layui.js"></script>
+<script>
+layui.use(function(){
+  const data=[
+    {
+      "menuID": 1,
+      "routePath": "/system",
+      "name": "系统管理",
+      "children": [
+        {
+          "menuID": 6,
+          "parentID": 1,
+          "icon": "<i class=\"layui-icon layui-icon-set\"></i>",
+          "routePath": "/desk/system/menu",
+          "name": "菜单管理",
+        },
+      ]
+    },
+    {
+      "menuID": 9,
+      "routePath": "/desk/system/content",
+      "name": "内容管理",
+      "children": [
+        {
+          "menuID": 905,
+          "parentID": 9,
+          "routePath": "/desk/system/oss",
+          "name": "文件管理",
+        },
+      ]
+    }
+  ];
+  const table = layui.treeTable;
+  const height=400;
+  typeof table.render === 'function' && table.render(Object.assign({}, {
+    elem: '#MenuList',
+    id:'MenuList_inst',
+    cols: [[
+      {type: 'numbers', title: '序号'},
+      {title: '菜单名称', field: 'name'},
+      {title: '菜单路由', field: 'routePath'},
+      {title: '操作', field: 'action',
+        templet: (record) => {
+          const {LAY_NUM,menuID,name}=record;
+          function add(){
+          }
+          function edit(){
+            const fsfdsa=record;
+            debugger;
+          }
+          function del(){
+          }
+          const funcName=`admin_menu_MenuList${LAY_NUM}`;
+          window[`${funcName}_add`]=add;
+          window[`${funcName}_edit`]=edit;
+          window[`${funcName}_del`]=del;
+          return `<div>
+                            <a onclick="${funcName}_add()"><i class='layui-icon layui-icon-add-1'/></a>
+                            <a onclick="${funcName}_edit()"><i class='layui-icon layui-icon-edit'/></a>
+                            <a onclick="${funcName}_del()"><i class='layui-icon layui-icon-delete'/></a>
+                        </div>`;
+        }
+      },
+    ]],
+    data:data,
+    maxHeight: height, page: false,
+  },));
+});
+</script>
+</body>
+</html>
